@@ -1,0 +1,59 @@
+﻿@model ApartmentMng.Core.Models.GetManyResult<ApartmentMng.Entities.Concrete.Personel>
+@{
+    ViewBag.Title = "ApartmentAdd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h3>Apartman Ekle</h3>
+
+
+<form method="post" action="ApartmentAdd">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Apartman İsmi</label>
+        <input class="form-control" id="ApartmentName" name="ApartmentName" />
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Şehir</label>
+        <input class="form-control" id="City" name="City" />
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlInput1">İlçe</label>
+        <input class="form-control" id="County" name="County" />
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Adress</label>
+        <input class="form-control" id="Address" name="Address" />
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Apartman Yöneticisi Seç</label>
+        <select class="form-control" id="ApartmentManager" name="ApartmentManager">
+            @if (Model != null && Model.Result != null)
+
+                @foreach (var personel in Model.Result)
+                {
+                    @foreach (var item in personel.Roles)
+                    {
+                        @if (@item.ToString() == "fcf6537f-dfb1-4f98-bbb2-0a38f2dbbfab")
+                        {
+                            <option>@personel.NameSurname</option>
+                        }
+
+                    }
+
+                }
+            }
+
+
+        </select>
+    </div>
+    <div>
+        <button class="btn btn-bold btn-block btn-primary" type="submit">Ekle</button>
+    </div>
+
+
+</form>

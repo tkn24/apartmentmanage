@@ -1,0 +1,156 @@
+﻿@model ApartmentMng.Core.Models.GetManyResult<ApartmentMng.Entities.Concrete.Personel>
+@{
+    ViewData["Title"] = "GetAllPersonels";
+}
+
+<div class="main-content">
+    <div class="card">
+        <h4 class="card-title"><strong>Kullanıcılar</strong> </h4>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-separated">
+                            <thead>
+                                <tr>
+                                    <th>Ad Soyad</th>
+                                    <th>Kullanıcı Adı</th>
+                                    <th>Email</th>
+                                    <th>Mesleği</th>
+                                    <th>Oluşturulma Tarihi</th>
+                                    <th class="text-center w-100px">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var personel in Model.Result)
+                                {
+                                    <tr>
+
+                                        <td>@personel.NameSurname</td>
+                                        <td>@personel.UserName</td>
+                                        <td>@personel.Email</td>
+                                        <td>@personel.Job</td>
+                                        <td>@personel.CreatedDate</td>
+                                        <td class="text-right table-actions">
+                                            <a class="table-action hover-danger" href="#"><i class="ti-trash"></i></a>
+                                            <button onclick="roleAdd('@personel.Id')" class="btn btn-xs btn-danger">Yetki</button>
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rol İşlemleri</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="switch-stacked">
+                    <input type="hidden" name="personelId" id="personelId" />
+                    <div class="row" id="chckRoles">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" id="btnSaveRoles">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        function roleAdd(id) {
+            $("#exampleModal").modal("show");
+
+            $.ajax({
+                url: "/getroles/" + id,
+                type: "GET",
+                success: function (data) {
+
+                    if (data.success) {
+                        $("#chckRoles").html("");
+                        $("#personelId").val(id);
+                        $.each(data.entity.roles, function (index, role) {
+                            var isChecked = "";
+                            $.each(data.entity.personelRoleList, function (index2, personelRole) {
+                                if (role.id == personelRole.id) {
+                                    isChecked = "checked"
+                                }
+                            })
+                            $("#chckRoles")
+                                .append("<label class='switch switch-sm'>" +
+                                    "<input name='chckRole' value='" + role.id + "' type='checkbox' " + isChecked + ">" +
+                                    "<span class='switch-indicator'></span>" +
+                                    "<span class='switch-description'>" + role.normalizedName + "</span>" +
+                                    "</label>"
+                                )
+                        });
+                    }
+
+                }
+
+
+            })
+        }
+
+        $("#btnSaveRoles").on('click', function () {
+
+            var personelId = $("#personelId").val();
+            var personelRoleList = [];
+            $("input:checkbox[name=chckRole]:checked").each(function () {
+
+                personelRoleList.push($(this).val());
+            });
+
+            $.ajax({
+                url: "/update/personel/roles",
+                type: "POST",
+                data: {
+                    personelId: personelId, personelRoleList: personelRoleList
+                },
+                success: function (response) {
+
+                    $("#exampleModal").modal("hide");
+
+                    if (response.success) {
+                        Swal.fire(
+                            'Başarılı',
+                            response.message,
+                            'success'
+                        )
+                    }
+                    else {
+                        Swal.fire(
+                            'HATA!',
+                            response.message,
+                            'error'
+                        )
+                    }
+                }
+
+            })
+
+
+        })
+
+    </script>
+}

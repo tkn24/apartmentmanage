@@ -1,0 +1,51 @@
+﻿@model ApartmentMng.Core.Models.GetManyResult<ApartmentMng.Entities.Concrete.Apartment>
+@{
+    ViewData["Title"] = "GetAllApartments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <div class="card">
+        <h4 class="card-title"><strong>Apartmanlar</strong> </h4>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-separated">
+                            <thead>
+                                <tr>
+
+                                    <th>Apartman Adı</th>
+                                    <th>Şehir</th>
+                                    <th>İlçe</th>
+                                    <th>Adres</th>
+                                    <th>Apartman Yöneticisi</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                @foreach (var apartment in Model.Result)
+                                {
+                                <tr>
+
+                                    <td>@apartment.ApartmentName</td>
+                                    <td>@apartment.City</td>
+                                    <td>@apartment.County</td>
+                                    <td>@apartment.Address</td>
+                                    <td>@apartment.ApartmentManager</td>
+                                </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApartmentMng.Entities.Concrete.Personel> SignInManager
+@inject UserManager<ApartmentMng.Entities.Concrete.Personel> UserManager
+
+
+
+    <div class="topbar-right">
+        <a class="topbar-btn" href="#qv-global" data-toggle="quickview"><i class="ti-align-right"></i></a>
+
+        <div class="topbar-divider"></div>
+
+        <ul class="topbar-btns">
+            <li class="dropdown">
+                <span class="topbar-btn" data-toggle="dropdown"><img class="avatar" src="../assets/img/avatar/1.jpg" alt="...">@UserManager.GetUserName(User)</span>
+                <div class="dropdown-menu dropdown-menu-right">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a class="dropdown-item" href="#"><i class="ti-settings"></i> @UserManager.GetUserName(User)</a>
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="/Account/LogOut"><i class="ti-power-off"></i> Çıkış Yap</a>
+                    }
+                    else
+                    {
+                        <a class="dropdown-item" href="/Account/Login"><i class="ti-power-off"></i>Giriş Yapınız</a>
+                    }
+
+
+                </div>
+            </li>
+
+
+        </ul>
+
+        <div class="topbar-divider"></div>
+
+
+    </div>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApartmentMng.DataAccess\ApartmentMng.DataAccess.csproj" />
+    <ProjectReference Include="..\ApartmentMng.Entities\ApartmentMng.Entities.csproj" />
+    <ProjectReference Include="..\ApartmentMng.Models\ApartmentMng.Models.csproj" />
+  </ItemGroup>
+
+</Project>
